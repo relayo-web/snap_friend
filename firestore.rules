@@ -1,0 +1,86 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ────────────────  ユーザー情報  ──────────────── */
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth.uid == userId;
+
+      match /friends/{friendId} {
+        allow read, create, delete: if request.auth.uid == userId;
+      }
+
+      match /notifications/{notifId} {
+        allow read, update: if request.auth.uid == userId;
+        allow create, delete: if false;
+      }
+    }
+
+    /* ────────────  フレンドリクエスト  ──────────── */
+    match /friendRequests/{userId}/received/{fromUid} {
+      allow read:   if request.auth.uid == userId;
+      allow create: if request.auth.uid == fromUid;
+      allow delete: if request.auth.uid == userId;
+    }
+
+    match /friendRequests/{userId}/sent/{toUid} {
+      allow read, create, delete: if request.auth.uid == userId;
+    }
+
+    /* ────────────────  投稿 (posts)  ──────────────── */
+    match /posts/{postId} {
+      allow read: if true;
+
+      allow create: if request.auth.uid != null
+                    && request.auth.uid == request.resource.data.ownerId;
+
+      allow update, delete: if request.auth.uid == resource.data.ownerId;
+
+      /* likes サブコレクション */
+      match /likes/{likeId} {
+        allow read: if true;
+
+        allow create: if request.auth != null
+                      && request.resource.data.ownerId == request.auth.uid
+                      && request.resource.data.postId == postId;
+
+        allow delete: if request.auth != null
+                      && resource.data.ownerId == request.auth.uid;
+      }
+
+      /* comments サブコレクション */
+      match /comments/{commentId} {
+        allow read: if true;
+
+        allow create: if request.auth.uid != null
+                      && request.resource.data.ownerId == request.auth.uid
+                      && request.resource.data.keys()
+                           .hasOnly(['id','ownerId','text','ts'])
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() <= 300;
+
+        allow update, delete: if request.auth.uid == resource.data.ownerId;
+      }
+    }
+
+    /* ────────────────  フィード (feeds)  ──────────────── */
+    match /feeds/{userId}/posts/{postId} {
+      allow read:   if request.auth.uid == userId;
+      allow create, update, delete: if false;
+    }
+
+    /* ────────────────  セッション (sessions)  ──────────────── */
+    match /sessions/{sessionId} {
+      allow read: if request.auth.uid in resource.data.participants;
+
+      allow create: if request.auth.uid != null
+                    && request.auth.uid in request.resource.data.participants
+                    && request.resource.data.createdAt is timestamp;
+
+      allow update: if request.auth.uid in resource.data.participants;
+
+      allow delete: if false;
+    }
+  }
+}

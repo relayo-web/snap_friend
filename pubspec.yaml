@@ -1,0 +1,46 @@
+name: snap_friend
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.8
+
+  # Firebase modules
+  firebase_core: ^3.15.1
+  firebase_auth: ^5.6.2
+  cloud_firestore: ^5.6.11
+  firebase_storage: ^12.4.9
+  firebase_app_check: ^0.3.2+9
+
+  # 認証関連追加
+  email_validator: ^2.1.17     # メール形式チェック
+  flutter_hooks: ^0.20.5        # Hooksベースの簡潔UI構築（任意）
+
+  # 画像選択・キャッシュ
+  image_picker: ^1.1.2
+  cached_network_image: ^3.3.0
+
+  # QRコード関連
+  qr_flutter: ^4.1.0
+  qr_code_scanner: ^1.0.1
+
+  # その他ユーティリティ
+  mime: ^1.0.4
+  firebase_crashlytics: ^4.3.9
+  firebase_analytics: ^11.5.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
