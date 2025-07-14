@@ -1,45 +1,61 @@
-# Miscellaneous
+# --- Miscellaneous ---
 *.class
 *.log
 *.pyc
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+# --- IDE ---
 *.iml
 *.ipr
 *.iws
 .idea/
+.vscode/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# --- Flutter / Dart ---
 .dart_tool/
+.packages
+.pub/
+.pub-cache/
 .flutter-plugins
 .flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
+build/
+pubspec.lock
+**/doc/api/
+**/ios/Flutter/.last_build_id
 
-# Symbolication related
+# --- iOS ---
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+*.xcuserstate
+**/*.xcodeproj/*
+*.xcworkspace
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# --- Android ---
+android/.gradle/
+android/.idea/
+android/app/build/
+android/local.properties
+android/app/debug
+android/app/profile
+android/app/release
+*.jks
+
+# --- macOS ---
+.DS_Store
+
+# --- Firebase Functions (Node.js) ---
+firebase-debug.log
+functions/node_modules/
+functions/lib/
+functions/.env
